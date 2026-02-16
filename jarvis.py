@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from hand_detection_yolo import Yolo
+from main import *
 
 def init():
     print("\n")
@@ -10,7 +10,7 @@ def init():
     choice = input("donne ton choix :")
 
     if (int(choice) == 0):
-        Yolo()
+        main
 
 if __name__ == "__main__":
     init()
