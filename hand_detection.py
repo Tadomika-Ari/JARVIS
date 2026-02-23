@@ -5,7 +5,6 @@ import os
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from pynput.mouse import Controller, Button
-import time
 
 def main():
     # Configuration du détecteur de mains
@@ -30,6 +29,8 @@ def main():
 
     mouse = Controller()
     cap = cv2.VideoCapture(0)
+    prev_index = None
+    curr = None
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -41,14 +42,12 @@ def main():
         
         #check on llm
         result = detector.detect(mp_image)
-
         if result.hand_landmarks:
             for hand_landmarks in result.hand_landmarks:
                 for landmark in hand_landmarks:
                     x = int(landmark.x * w)
                     y = int(landmark.y * h)
                     cv2.circle(frame, (x, y), 5, (0, 255, 0), -1)
-                
                 for connection in HAND_CONNECTIONS:
                     start_idx, end_idx = connection
                     start = hand_landmarks[start_idx]
@@ -56,20 +55,26 @@ def main():
                     start_point = (int(start.x * w), int(start.y * h))
                     end_point = (int(end.x * w), int(end.y * h))
                     cv2.line(frame, start_point, end_point, (255, 0, 0), 2)
-
                 thumb = hand_landmarks[4]
                 index = hand_landmarks[8]
                 dist = math.hypot(thumb.x - index.x, thumb.y - index.y)
                 print(dist)
-
                 if dist < 0.06:
-                    cv2.putText(frame, "PINCH (zoom)", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                    cv2.putText(frame, "Scroll down", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
                     mouse.scroll(0, -1)
                 elif dist > 0.25:
-                    cv2.putText(frame, "OPEN (dezoom)", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                    cv2.putText(frame, "Scroll up", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                     mouse.scroll(0, 1)
-
+                index = hand_landmarks[0]
+                curr = (index.x, index.y)
+                if prev_index is not None:
+                    dx = curr[0] - prev_index[0]
+                    dy = curr[1] - prev_index[1]
+                    move = math.hypot(dx, dy)
+                    # print("Move :")
+                    # print(move)
         cv2.imshow("Hand Tracking", frame)
+        prev_index = curr
         key = cv2.waitKey(1) & 0xFF
         if (key == 27):
             break
