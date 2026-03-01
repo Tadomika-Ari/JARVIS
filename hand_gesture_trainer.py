@@ -8,7 +8,7 @@ from sklearn.preprocessing import LabelEncoder
 
 DATASET_FILE = "gesture_dataset.csv"
 MODEL_FILE = "gesture_model.pth"
-EPOCHS = 50
+EPOCHS = 100
 BATCH_SIZE = 32
 LEARNING_RATE = 0.001
 
@@ -54,7 +54,9 @@ class GestureNet(nn.Module):
     def __init__(self, input_size, num_classes):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(input_size, 64),
+            nn.Linear(input_size, 128),
+            nn.ReLU(),
+            nn.Linear(128, 64),
             nn.ReLU(),
             nn.Linear(64, 32),
             nn.ReLU(),
