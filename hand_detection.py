@@ -61,18 +61,17 @@ def main():
                 print(dist)
                 if dist < 0.06:
                     cv2.putText(frame, "Scroll down", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-                    mouse.scroll(0, -1)
+                    # mouse.scroll(0, -1)
                 elif dist > 0.25:
                     cv2.putText(frame, "Scroll up", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                    mouse.scroll(0, 1)
+                    # mouse.scroll(0, 1)
                 index = hand_landmarks[0]
                 curr = (index.x, index.y)
                 if prev_index is not None:
                     dx = curr[0] - prev_index[0]
                     dy = curr[1] - prev_index[1]
-                    move = math.hypot(dx, dy)
-                    # print("Move :")
-                    # print(move)
+                    x, y = mouse.position
+                    mouse.position = ((x + dx * 2000), (y + dy * 2000)) 
         cv2.imshow("Hand Tracking", frame)
         prev_index = curr
         key = cv2.waitKey(1) & 0xFF
