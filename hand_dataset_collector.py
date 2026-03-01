@@ -52,6 +52,7 @@ def main():
     print("3 = thumbs up")
     print("4 = ok")
     print("5 = Wii Pointer")
+    print("6 = thumb+smol")
     print("ESC = quit")
 
     with open(DATASET_FILE, mode="a", newline="") as f:
