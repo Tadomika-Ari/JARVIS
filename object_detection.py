@@ -9,7 +9,6 @@ import os
 
 
 def visualize(frame_bgr: np.ndarray, detection_result) -> np.ndarray:
-    """Dessine les bounding boxes + labels sur une frame OpenCV (BGR)."""
     if detection_result is None:
         return frame_bgr
 
@@ -52,7 +51,6 @@ def visualize(frame_bgr: np.ndarray, detection_result) -> np.ndarray:
 
 
 def cv2_imshow(image_bgr: np.ndarray, window_name: str = "Object detection") -> None:
-    """Compat: remplace cv2_imshow (souvent vu dans Google Colab)."""
     cv2.imshow(window_name, image_bgr)
 
 def object() -> None:
