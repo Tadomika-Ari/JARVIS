@@ -7,3 +7,4 @@ torch
 ultralytics
 ollama
 piper-tts
+vosk
