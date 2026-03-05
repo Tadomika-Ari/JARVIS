@@ -19,6 +19,11 @@ Fonctionnalité :
 * Détection objet.
 * Et bien d'autres. 
 
+```
+./env/bin/python -m pip install -r requiremen.txt
+
+```
+
 
 ***
 
